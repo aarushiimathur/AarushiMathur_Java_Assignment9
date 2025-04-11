@@ -143,3 +143,17 @@ public class StudentOperation {
             e.printStackTrace();
         }
     }
+    // Delete student
+    public static void deleteStudent(int prn) {
+        try (
+                Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+                PreparedStatement stmt = con.prepareStatement("DELETE FROM student WHERE PRN = ?")
+        ) {
+            stmt.setInt(1, prn);
+            int rowsDeleted = stmt.executeUpdate();
+            System.out.println(rowsDeleted > 0 ? "Student deleted successfully" : "Student not found.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
