@@ -78,4 +78,24 @@ public class StudentOperation {
             e.printStackTrace();
         }
     }
-    
+    // Search by Name
+    public static void searchByName(String name) {
+        try (
+                Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+                PreparedStatement stmt = con.prepareStatement("SELECT * FROM student WHERE Name LIKE ?")
+        ) {
+            stmt.setString(1, "%" + name + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            boolean found = false;
+            while (rs.next()) {
+                found = true;
+                System.out.println("PRN: " + rs.getInt("PRN") + ", Name: " + rs.getString("Name") +
+                        ", Branch: " + rs.getString("Branch") + ", Batch: " + rs.getString("Batch") +
+                        ", CGPA: " + rs.getFloat("CGPA"));
+            }
+            if (!found) System.out.println("No students found with that name.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
