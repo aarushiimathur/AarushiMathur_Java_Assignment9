@@ -99,3 +99,25 @@ public class StudentOperation {
             e.printStackTrace();
         }
     }
+    // Search by position (row number)
+    public static void searchByPosition(int position) {
+        try (
+                Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM student")
+        ) {
+            int count = 0;
+            while (rs.next()) {
+                count++;
+                if (count == position) {
+                    System.out.println("Found at position " + position + ": PRN: " + rs.getInt("PRN") +
+                            ", Name: " + rs.getString("Name") + ", Branch: " + rs.getString("Branch") +
+                            ", Batch: " + rs.getString("Batch") + ", CGPA: " + rs.getFloat("CGPA"));
+                    return;
+                }
+            }
+            System.out.println("No student found at that position.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
